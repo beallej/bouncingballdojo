@@ -3,26 +3,49 @@ package ball.model;
 import ball.Ball;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static ball.BallTestHarness.assertRadiusIs;
 import static ball.BallTestHarness.oneStepInwardsFrom;
+import static ball.BallTestHarness.oneStepOutwardsFrom;
 
 /**
  * Created by jbealle on 10/18/16.
  */
 public class ElasticBehaviorTest {
+
     @Test
     public void shouldDecreaseRadius() {
-        List<Behavior> behaviors = new ArrayList<Behavior>();
+        Ball elasticBall = BallFactory.elasticBall(0, 0, 20, ElasticBehavior.SHRINK);
 
-        ElasticBehavior behavior = new ElasticBehavior(ElasticBehavior.SHRINK);
-        behaviors.add(behavior);
-        Ball bouncingElasticBall = new BouncingElasticBall(0, 0, 20, behaviors);
+        elasticBall.update();
 
-        bouncingElasticBall.update();
-
-        assertRadiusIs(oneStepInwardsFrom(20), bouncingElasticBall);
+        assertRadiusIs(oneStepInwardsFrom(20), elasticBall);
     }
+
+    @Test
+    public void shouldIncreaseRadiusAfterFullyShrinking() throws Exception {
+        Ball elasticBall = BallFactory.elasticBall(0, 0, 0, ElasticBehavior.SHRINK);
+
+        elasticBall.update();
+
+        assertRadiusIs(oneStepOutwardsFrom(0), elasticBall);
+    }
+
+    @Test
+    public void shouldIncreaseInSize() {
+        Ball elasticBall = BallFactory.elasticBall(250, 100, 20, ElasticBehavior.GROW);
+
+        elasticBall.update();
+
+        assertRadiusIs(oneStepOutwardsFrom(20), elasticBall);
+    }
+
+    @Test
+    public void shouldDecreaseInSizeAfterFullyExpanding() throws Exception {
+        Ball elasticBall = BallFactory.elasticBall(0, 0, Ball.DEFAULT_RADIUS, ElasticBehavior.GROW);
+
+        elasticBall.update();
+
+        assertRadiusIs(oneStepInwardsFrom(Ball.DEFAULT_RADIUS), elasticBall);
+    }
+
 }

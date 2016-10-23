@@ -9,8 +9,8 @@ public class BallFactory {
 
     public static Ball[] all() {
         return new Ball[]{
-                bouncingBall(75, 50, BouncingBall.DOWN),
-                elasticBall(250, 100, Ball.DEFAULT_RADIUS, ElasticBall.SHRINK),
+                bouncingBall(75, 50, BouncingBehavior.DOWN),
+                elasticBall(250, 100, Ball.DEFAULT_RADIUS, ElasticBehavior.SHRINK),
                 bouncingElasticBall(300, 100, Ball.DEFAULT_RADIUS)
         };
     }
@@ -25,10 +25,16 @@ public class BallFactory {
     }
 
     public static Ball bouncingBall(int centerX, int centerY, int direction) {
-        return new BouncingBall(centerX, centerY, direction);
+        Behavior bouncingBehavior = new BouncingBehavior(direction);
+        List<Behavior> behaviors = new ArrayList<Behavior>();
+        behaviors.add(bouncingBehavior);
+        return new BouncingElasticBall(centerX, centerY, behaviors);
     }
 
     public static Ball elasticBall(int centerX, int centerY, int radius, int direction) {
-        return new ElasticBall(centerX, centerY, radius, direction);
+        Behavior elasticBehavior = new ElasticBehavior(direction);
+        List<Behavior> behaviors = new ArrayList<Behavior>();
+        behaviors.add(elasticBehavior);
+        return new BouncingElasticBall(centerX, centerY, radius, behaviors);
     }
 }

@@ -13,6 +13,11 @@ public class BouncingElasticBall extends BallImpl{
         this.behaviors = behaviors;
 
     }
+    public BouncingElasticBall(int x, int y, List<Behavior> behaviors) {
+        super(x,y);
+        this.behaviors = behaviors;
+
+    }
 
     @Override
     public void update() {
